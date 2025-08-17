@@ -1,4 +1,4 @@
-package com.boaDispensarySystem.controllers;
+package boaDispensarySystem.controllers;
 
 public class DeleteMe {
     public static void main(String[] args) {
