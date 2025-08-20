@@ -13,7 +13,7 @@ public class Main {
 
         Doctor doctor = new Doctor();
         doctor.setId("D123");
-        doctor.setFirstName("John");
+        doctor.setFirstName("Augustine");
         doctor.setLastName("Doe");
         doctor.setSpecialization(Specialization.DERMATOLOGIST);
         doctor.setEmail("johndoe@example.com");
