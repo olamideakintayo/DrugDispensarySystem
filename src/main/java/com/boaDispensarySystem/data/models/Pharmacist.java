@@ -1,6 +1,6 @@
 package com.boaDispensarySystem.data.models;
 
-public class Pharmacists {
+public class Pharmacist {
     private String id;
     private String firstName;
     private String lastName;
