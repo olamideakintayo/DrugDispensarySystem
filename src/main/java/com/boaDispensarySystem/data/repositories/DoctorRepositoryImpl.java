@@ -30,7 +30,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             stmt.setString(1, doctor.getId());
             stmt.setString(2, doctor.getFirstName());
             stmt.setString(3, doctor.getLastName());
-            stmt.setString(4, doctor.getSpecialization().name()); // store enum as string
+            stmt.setString(4, doctor.getSpecialization().name());
             stmt.setString(5, doctor.getEmail());
             stmt.setString(6, doctor.getPassword());
 
@@ -47,7 +47,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         String sql = "SELECT * FROM doctors WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);  // ✅ Make sure you use setString
+            stmt.setString(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
