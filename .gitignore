@@ -1,0 +1,15 @@
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java
+target/
+*.class
+
+# IntelliJ / VSCode
+.idea/
+.vscode/
