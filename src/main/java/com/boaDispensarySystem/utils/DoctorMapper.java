@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class DoctorMapper {
 
-    // ------------------- ResultSet -> Entity -------------------
+    // ResultSet -> Entity
     public static Doctor mapResultSetToDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setId(rs.getString("id"));
@@ -23,7 +23,7 @@ public class DoctorMapper {
         return doctor;
     }
 
-    // ------------------- DTO -> Entity (Create) -------------------
+    //DTO -> Entity (Create)
     public static Doctor mapCreateDoctorRequestToDoctor(CreateDoctorRequest request, String id) {
         Doctor doctor = new Doctor();
         doctor.setId(id);
