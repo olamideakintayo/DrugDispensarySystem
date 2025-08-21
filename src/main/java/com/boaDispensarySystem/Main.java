@@ -1,15 +1,19 @@
 package com.boaDispensarySystem;
 
+import com.boaDispensarySystem.data.models.Patient;
 import com.boaDispensarySystem.data.repositories.DoctorRepository;
 import com.boaDispensarySystem.data.repositories.DoctorRepositoryImpl;
 import com.boaDispensarySystem.data.models.Doctor;
 import com.boaDispensarySystem.data.models.Specialization;
+import com.boaDispensarySystem.data.repositories.PatientRepository;
+import com.boaDispensarySystem.data.repositories.PatientRepositoryImpl;
 
 import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
         DoctorRepository doctorRepository = new DoctorRepositoryImpl();
+        PatientRepository patientRepository = new PatientRepositoryImpl();
 
         Doctor doctor = new Doctor();
         doctor.setId("D123");
@@ -29,6 +33,17 @@ public class Main {
         } else {
             System.out.println("❌ Doctor not found");
         }
+
+//        Patient patient = new Patient();
+//        patient.setId("P456");
+//        patient.setFirstName("Jane");
+//        patient.setLastName("Doe");
+//        patient.setEmail("j.doe@gmail.com");
+//        patient.setAge("12");
+//        patient.setGender("Female");
+//        patientRepository.save(patient);
+//        System.out.println("✅ Patient saved:" + patient.getFirstName());
+
 
     }
 }
