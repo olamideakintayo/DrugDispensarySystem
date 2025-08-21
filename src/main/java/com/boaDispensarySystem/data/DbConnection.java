@@ -1,6 +1,7 @@
 package com.boaDispensarySystem.data;
 
 
+import com.boaDispensarySystem.exceptions.SQLNullException;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class DbConnection {
         System.out.println("🔍 Loaded DB_PASSWORD = " + (password != null ? "****" : "null"));
 
         if (url == null || user == null) {
-            throw new SQLException("Database credentials not loaded from .env file");
+            throw new SQLNullException("Database credentials not loaded from .env file");
         }
 
         return DriverManager.getConnection(url, user, password);
