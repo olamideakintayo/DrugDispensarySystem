@@ -13,6 +13,12 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Override
     public Doctor save(Doctor doctor) {
+        String idPrefix = "DR";
+        String databaseSize = String.valueOf(count());
+        String id = idPrefix+ databaseSize;
+
+        doctor.setId(id);
+
         String sql = "INSERT INTO doctors (id, first_name, last_name, email, password, specialization) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
