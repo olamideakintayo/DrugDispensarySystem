@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class MapperUtils {
 
-    // ------------------- ResultSet -> Entity -------------------
+    //ResultSet -> Entity
     public static Doctor mapResultSetToDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setId(rs.getString("id"));
@@ -22,7 +22,6 @@ public class MapperUtils {
         return doctor;
     }
 
-    // ------------------- DTO -> Entity (Create) -------------------
     public static Doctor mapCreateDoctorRequestToDoctor(CreateDoctorRequest request, String id) {
         Doctor doctor = new Doctor();
         doctor.setId(id);
@@ -34,7 +33,7 @@ public class MapperUtils {
         return doctor;
     }
 
-    // ------------------- Entity -> DTO (Response) -------------------
+    // Entity -> DTO (Response)
     public static DoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
         return new DoctorResponse(
                 doctor.getId(),
@@ -46,7 +45,7 @@ public class MapperUtils {
         );
     }
 
-    // ------------------- DTO -> Entity (Update) -------------------
+    //DTO -> Entity (Update)
     public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, CreateDoctorRequest request) {
         existingDoctor.setFirstName(request.getFirstName());
         existingDoctor.setLastName(request.getLastName());
