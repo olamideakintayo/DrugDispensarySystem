@@ -2,7 +2,7 @@ package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Doctor;
-import com.boaDispensarySystem.data.models.Specialization;
+import com.boaDispensarySystem.utils.DoctorMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,28 +13,18 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Override
     public Doctor save(Doctor doctor) {
-        String query = """
-                INSERT INTO doctors (id, first_name, last_name, specialization, email, password)
-                VALUES (?, ?, ?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE
-                    first_name = VALUES(first_name),
-                    last_name = VALUES(last_name),
-                    specialization = VALUES(specialization),
-                    email = VALUES(email),
-                    password = VALUES(password)
-                """;
+        String sql = "INSERT INTO doctors (id, first_name, last_name, email, password, specialization) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try (Connection connection = DbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+            ps.setString(1, doctor.getId());
+            ps.setString(2, doctor.getFirstName());
+            ps.setString(3, doctor.getLastName());
+            ps.setString(4, doctor.getEmail());
+            ps.setString(5, doctor.getPassword());
+            ps.setString(6, doctor.getSpecialization().name());
 
-            stmt.setString(1, doctor.getId());
-            stmt.setString(2, doctor.getFirstName());
-            stmt.setString(3, doctor.getLastName());
-            stmt.setString(4, doctor.getSpecialization().name());
-            stmt.setString(5, doctor.getEmail());
-            stmt.setString(6, doctor.getPassword());
-
-            stmt.executeUpdate();
+            ps.executeUpdate();
             return doctor;
 
         } catch (SQLException e) {
@@ -46,89 +36,112 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     public Optional<Doctor> findById(String id) {
         String sql = "SELECT * FROM doctors WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Doctor doctor = new Doctor();
-                    doctor.setId(rs.getString("id"));
-                    doctor.setFirstName(rs.getString("first_name"));
-                    doctor.setLastName(rs.getString("last_name"));
-                    doctor.setSpecialization(Specialization.valueOf(rs.getString("specialization")));
-                    doctor.setEmail(rs.getString("email"));
-                    doctor.setPassword(rs.getString("password"));
-                    return Optional.of(doctor);
-                }
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error finding doctor by id", e);
-        }
-        return Optional.empty();
-    }
+            return Optional.empty();
 
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding doctor by ID", e);
+        }
+    }
 
     @Override
     public Optional<Doctor> findByEmail(String email) {
-        String query = "SELECT * FROM doctors WHERE email = ?";
-        try (Connection connection = DbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        String sql = "SELECT * FROM doctors WHERE email = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return Optional.of(mapRowToDoctor(rs));
+                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             }
+            return Optional.empty();
 
         } catch (SQLException e) {
             throw new RuntimeException("Error finding doctor by email", e);
         }
-        return Optional.empty();
     }
 
     @Override
     public List<Doctor> findAll() {
+        String sql = "SELECT * FROM doctors";
         List<Doctor> doctors = new ArrayList<>();
-        String query = "SELECT * FROM doctors";
-        try (Connection connection = DbConnection.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = DbConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                doctors.add(mapRowToDoctor(rs));
+                doctors.add(DoctorMapper.mapResultSetToDoctor(rs));
             }
+            return doctors;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error fetching all doctors", e);
+            throw new RuntimeException("Error retrieving all doctors", e);
         }
-        return doctors;
     }
 
     @Override
     public boolean deleteById(String id) {
-        String query = "DELETE FROM doctors WHERE id = ?";
-        try (Connection connection = DbConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        String sql = "DELETE FROM doctors WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, id);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            ps.setString(1, id);
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting doctor", e);
         }
+        return false;
     }
 
-    private Doctor mapRowToDoctor(ResultSet rs) throws SQLException {
-        return new Doctor(
-                rs.getString("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                Specialization.valueOf(rs.getString("specialization")),
-                rs.getString("email"),
-                rs.getString("password")
-        );
+    @Override
+    public long count() {
+        String sql = "SELECT COUNT(*) AS total FROM doctors";
+        try (Connection conn = DbConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getLong("total");
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting doctors", e);
+        }
+    }
+
+    @Override
+    public Doctor update(Doctor doctor) {
+        String sql = "UPDATE doctors SET first_name = ?, last_name = ?, email = ?, password = ?, specialization = ? WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, doctor.getFirstName());
+            ps.setString(2, doctor.getLastName());
+            ps.setString(3, doctor.getEmail());
+            ps.setString(4, doctor.getPassword());
+            ps.setString(5, doctor.getSpecialization().name());
+            ps.setString(6, doctor.getId());
+
+            int updatedRows = ps.executeUpdate();
+            if (updatedRows == 0) {
+                throw new RuntimeException("No doctor found with id: " + doctor.getId());
+            }
+            return doctor;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating doctor", e);
+        }
     }
 }
+
+
 

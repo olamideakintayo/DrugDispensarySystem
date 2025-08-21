@@ -1,5 +1,6 @@
 package com.boaDispensarySystem.data.repositories;
 
+
 import com.boaDispensarySystem.data.models.Doctor;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,10 @@ public interface DoctorRepository {
     Optional<Doctor> findByEmail(String email);
 
     List<Doctor> findAll();
+
+    Doctor update(Doctor doctor);
+
+    long count();
 
     boolean deleteById(String id);
 }
