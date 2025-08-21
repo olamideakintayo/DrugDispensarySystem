@@ -3,6 +3,7 @@ package com.boaDispensarySystem.utils;
 import com.boaDispensarySystem.data.models.Doctor;
 import com.boaDispensarySystem.data.models.Specialization;
 import com.boaDispensarySystem.dtos.requests.CreateDoctorRequest;
+import com.boaDispensarySystem.dtos.requests.UpdateDoctorRequest;
 import com.boaDispensarySystem.dtos.responses.CreateDoctorResponse;
 
 import java.sql.ResultSet;
@@ -35,24 +36,23 @@ public class DoctorMapper {
     }
 
     // ------------------- Entity -> DTO (Response) -------------------
-    public static CreateDoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
-        return new CreateDoctorResponse(
-                doctor.getId(),
-                doctor.getFirstName(),
-                doctor.getLastName(),
-                doctor.getEmail(),
-                doctor.getSpecialization()
-
-        );
+    public static CreateDoctorResponse mapDoctorToCreateDoctorResponse(Doctor doctor) {
+        CreateDoctorResponse response = new CreateDoctorResponse();
+        response.setId(doctor.getId());
+        response.setFirstName(doctor.getFirstName());
+        response.setLastName(doctor.getLastName());
+        response.setEmail(doctor.getEmail());
+        response.setSpecialization(Specialization.valueOf(doctor.getSpecialization().name()));
+        return response;
     }
 
     // ------------------- DTO -> Entity (Update) -------------------
-    public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, CreateDoctorRequest request) {
-        existingDoctor.setFirstName(request.getFirstName());
-        existingDoctor.setLastName(request.getLastName());
-        existingDoctor.setEmail(request.getEmail());
-        existingDoctor.setPassword(request.getPassword());
-        existingDoctor.setSpecialization(request.getSpecialization());
+    public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, UpdateDoctorRequest request) {
+        if (request.getFirstName() != null) existingDoctor.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) existingDoctor.setLastName(request.getLastName());
+        if (request.getEmail() != null) existingDoctor.setEmail(request.getEmail());
+        if (request.getPassword() != null) existingDoctor.setPassword(request.getPassword());
+        if (request.getSpecialization() != null) existingDoctor.setSpecialization(request.getSpecialization());
         return existingDoctor;
     }
 }
