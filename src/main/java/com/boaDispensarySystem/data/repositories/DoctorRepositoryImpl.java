@@ -2,7 +2,7 @@ package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Doctor;
-import com.boaDispensarySystem.utils.MapperUtils;
+import com.boaDispensarySystem.utils.DoctorMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return Optional.of(MapperUtils.mapResultSetToDoctor(rs));
+                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             }
             return Optional.empty();
 
@@ -59,7 +59,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return Optional.of(MapperUtils.mapResultSetToDoctor(rs));
+                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             }
             return Optional.empty();
 
@@ -77,7 +77,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                doctors.add(MapperUtils.mapResultSetToDoctor(rs));
+                doctors.add(DoctorMapper.mapResultSetToDoctor(rs));
             }
             return doctors;
 

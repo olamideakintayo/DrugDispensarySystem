@@ -2,13 +2,13 @@ package com.boaDispensarySystem.utils;
 
 import com.boaDispensarySystem.data.models.Doctor;
 import com.boaDispensarySystem.data.models.Specialization;
-import com.boaDispensarySystem.services.dtos.CreateDoctorRequest;
-import com.boaDispensarySystem.services.dtos.DoctorResponse;
+import com.boaDispensarySystem.dtos.requests.CreateDoctorRequest;
+import com.boaDispensarySystem.dtos.responses.CreateDoctorResponse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MapperUtils {
+public class DoctorMapper {
 
     // ------------------- ResultSet -> Entity -------------------
     public static Doctor mapResultSetToDoctor(ResultSet rs) throws SQLException {
@@ -35,8 +35,8 @@ public class MapperUtils {
     }
 
     // ------------------- Entity -> DTO (Response) -------------------
-    public static DoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
-        return new DoctorResponse(
+    public static CreateDoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
+        return new CreateDoctorResponse(
                 doctor.getId(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
