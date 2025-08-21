@@ -2,15 +2,16 @@ package com.boaDispensarySystem.utils;
 
 import com.boaDispensarySystem.data.models.Doctor;
 import com.boaDispensarySystem.data.models.Specialization;
-import com.boaDispensarySystem.services.dtos.CreateDoctorRequest;
-import com.boaDispensarySystem.services.dtos.DoctorResponse;
+import com.boaDispensarySystem.dtos.requests.CreateDoctorRequest;
+import com.boaDispensarySystem.dtos.requests.UpdateDoctorRequest;
+import com.boaDispensarySystem.dtos.responses.CreateDoctorResponse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MapperUtils {
+public class DoctorMapper {
 
-    //ResultSet -> Entity
+    // ResultSet -> Entity
     public static Doctor mapResultSetToDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setId(rs.getString("id"));
@@ -22,6 +23,7 @@ public class MapperUtils {
         return doctor;
     }
 
+    //DTO -> Entity (Create)
     public static Doctor mapCreateDoctorRequestToDoctor(CreateDoctorRequest request, String id) {
         Doctor doctor = new Doctor();
         doctor.setId(id);
@@ -33,25 +35,24 @@ public class MapperUtils {
         return doctor;
     }
 
-    // Entity -> DTO (Response)
-    public static DoctorResponse mapDoctorToDoctorResponse(Doctor doctor) {
-        return new DoctorResponse(
-                doctor.getId(),
-                doctor.getFirstName(),
-                doctor.getLastName(),
-                doctor.getEmail(),
-                doctor.getSpecialization()
-
-        );
+    //Entity -> DTO (Response)
+    public static CreateDoctorResponse mapDoctorToCreateDoctorResponse(Doctor doctor) {
+        CreateDoctorResponse response = new CreateDoctorResponse();
+        response.setId(doctor.getId());
+        response.setFirstName(doctor.getFirstName());
+        response.setLastName(doctor.getLastName());
+        response.setEmail(doctor.getEmail());
+        response.setSpecialization(Specialization.valueOf(doctor.getSpecialization().name()));
+        return response;
     }
 
     //DTO -> Entity (Update)
-    public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, CreateDoctorRequest request) {
-        existingDoctor.setFirstName(request.getFirstName());
-        existingDoctor.setLastName(request.getLastName());
-        existingDoctor.setEmail(request.getEmail());
-        existingDoctor.setPassword(request.getPassword());
-        existingDoctor.setSpecialization(request.getSpecialization());
+    public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, UpdateDoctorRequest request) {
+        if (request.getFirstName() != null) existingDoctor.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) existingDoctor.setLastName(request.getLastName());
+        if (request.getEmail() != null) existingDoctor.setEmail(request.getEmail());
+        if (request.getPassword() != null) existingDoctor.setPassword(request.getPassword());
+        if (request.getSpecialization() != null) existingDoctor.setSpecialization(request.getSpecialization());
         return existingDoctor;
     }
 }
