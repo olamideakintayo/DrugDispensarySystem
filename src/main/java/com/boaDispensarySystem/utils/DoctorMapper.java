@@ -35,7 +35,7 @@ public class DoctorMapper {
         return doctor;
     }
 
-    //Entity -> DTO (Response)
+    // ------------------- Entity -> DTO (Response) -------------------
     public static CreateDoctorResponse mapDoctorToCreateDoctorResponse(Doctor doctor) {
         CreateDoctorResponse response = new CreateDoctorResponse();
         response.setId(doctor.getId());
@@ -46,7 +46,7 @@ public class DoctorMapper {
         return response;
     }
 
-    //DTO -> Entity (Update)
+    // ------------------- DTO -> Entity (Update) -------------------
     public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, UpdateDoctorRequest request) {
         if (request.getFirstName() != null) existingDoctor.setFirstName(request.getFirstName());
         if (request.getLastName() != null) existingDoctor.setLastName(request.getLastName());

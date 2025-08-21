@@ -1,27 +1,17 @@
-package com.boaDispensarySystem.data.models;
+package com.boaDispensarySystem.dtos.requests;
 
-public class Doctor {
-    private String id;
+import com.boaDispensarySystem.data.models.Specialization;
+
+public class CreateDoctorRequest {
+
     private String firstName;
     private String lastName;
-    private Specialization  specialization;
-
     private String email;
     private String password;
+    private Specialization specialization;
 
+    public CreateDoctorRequest() {}
 
-
-    public Doctor() {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -35,15 +25,8 @@ public class Doctor {
         return lastName;
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-    public Specialization getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(Specialization specialization) {
-        this.specialization = specialization;
     }
 
     public String getEmail() {
@@ -60,5 +43,13 @@ public class Doctor {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 }
