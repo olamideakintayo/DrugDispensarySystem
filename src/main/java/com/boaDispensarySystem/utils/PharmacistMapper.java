@@ -42,7 +42,7 @@ public class PharmacistMapper {
     }
 
     public static CreatePharmacistResponse MapPharmacistToPharmacistResponse (Pharmacist pharmacist){
-        createPharmacistResponse response = new CreatePharmacistResponse();
+        CreatePharmacistResponse response = new CreatePharmacistResponse();
 
         response.setId(pharmacist.getString());
         response.setFirstName(pharmacist.getString());

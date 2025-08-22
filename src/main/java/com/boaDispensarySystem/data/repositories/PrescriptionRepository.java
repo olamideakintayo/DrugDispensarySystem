@@ -9,15 +9,17 @@ import java.util.Optional;
 
 public interface PrescriptionRepository {
 
-    Prescription save(Prescription prescription);
+    Prescription save(Prescription pharmacist);
 
     Optional<Prescription> findById(String id);
 
-    List<Prescription> findPrescriptionCreatedByDoctorId(String doctorId);
-
-    List<Prescription> findPrescriptionDispensedByPharmacistId(String pharmacistId);
+    Optional<Prescription> findByEmail(String email);
 
     List<Prescription> findAll();
+
+    Prescription update(Pharmacist pharmacist);
+
+    long count();
 
     boolean deleteById(String id);
 }
