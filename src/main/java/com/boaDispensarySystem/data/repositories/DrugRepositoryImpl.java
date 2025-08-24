@@ -2,6 +2,7 @@ package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Drug;
+import com.boaDispensarySystem.exceptions.*;
 
 import java.sql.*;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class DrugRepositoryImpl implements DrugRepository {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error counting drugs", e);
+            throw new DrugCountException("Error counting drugs", e);
         }
     }
 
@@ -43,7 +44,7 @@ public class DrugRepositoryImpl implements DrugRepository {
             return drug;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error saving drug", e);
+            throw new DrugCreationException("Error saving drug", e);
         }
 
     }
@@ -58,7 +59,7 @@ public class DrugRepositoryImpl implements DrugRepository {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting drug", e);
+            throw new DrugDeletionException("Error deleting drug", e);
         }
         return false;
     }
@@ -77,7 +78,7 @@ public class DrugRepositoryImpl implements DrugRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding drug by ID", e);
+            throw new DrugNotFoundException("Error finding drug by ID", e);
         }
     }
 
@@ -96,7 +97,7 @@ public class DrugRepositoryImpl implements DrugRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding drug by name", e);
+            throw new DrugNotFoundException("Error finding drug by name", e);
         }
     }
 
@@ -115,12 +116,12 @@ public class DrugRepositoryImpl implements DrugRepository {
 
             int updatedRows = ps.executeUpdate();
             if (updatedRows == 0) {
-                throw new RuntimeException("No doctor found with id: " + drug.getId());
+                throw new DrugNotFoundException("No doctor found with id: " + drug.getId());
             }
             return drug;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating drug", e);
+            throw new DrugUpdateExcpetion("Error updating drug", e);
         }
     }
 
