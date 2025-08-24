@@ -3,8 +3,10 @@ package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Pharmacist;
+import com.boaDispensarySystem.exceptions.PharmacistCountException;
 import com.boaDispensarySystem.exceptions.PharmacistCreationException;
 import com.boaDispensarySystem.exceptions.PharmacistNotFoundException;
+import com.boaDispensarySystem.exceptions.PharmacistUpdateException;
 import com.boaDispensarySystem.utils.PharmacistMapper;
 
 import java.sql.*;
@@ -127,7 +129,7 @@ public class PharmacistRepositoryImpl implements PharmacistRepository{
             return pharmacist;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating pharmacist", e);
+            throw new PharmacistUpdateException("Error updating pharmacist", e);
         }
     }
 
@@ -144,7 +146,7 @@ public class PharmacistRepositoryImpl implements PharmacistRepository{
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error counting pharmacists", e);
+            throw new PharmacistCountException("Error counting pharmacists", e);
         }
     }
 
