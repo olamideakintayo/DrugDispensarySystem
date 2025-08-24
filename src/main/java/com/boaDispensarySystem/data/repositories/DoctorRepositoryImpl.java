@@ -2,6 +2,7 @@ package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Doctor;
+import com.boaDispensarySystem.exceptions.*;
 import com.boaDispensarySystem.utils.DoctorMapper;
 
 import java.sql.*;
@@ -34,7 +35,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             return doctor;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error saving doctor", e);
+            throw new DoctorCreationException("Error saving doctor", e);
         }
     }
 
@@ -52,7 +53,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding doctor by ID", e);
+            throw new DoctorNotFoundException("Error finding doctor by ID", e);
         }
     }
 
@@ -70,7 +71,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding doctor by email", e);
+            throw new DoctorNotFoundException("Error finding doctor by email", e);
         }
     }
 
@@ -88,7 +89,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             return doctors;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving all doctors", e);
+            throw new DoctorNotFoundException("Error retrieving all doctors", e);
         }
     }
 
@@ -102,7 +103,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting doctor", e);
+            throw new DoctorDeletionException("Error deleting doctor", e);
         }
         return false;
     }
@@ -120,7 +121,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error counting doctors", e);
+            throw new DoctorCountException("Error counting doctors", e);
         }
     }
 
@@ -139,12 +140,12 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
             int updatedRows = ps.executeUpdate();
             if (updatedRows == 0) {
-                throw new RuntimeException("No doctor found with id: " + doctor.getId());
+                throw new DoctorNotFoundException("No doctor found with id: " + doctor.getId());
             }
             return doctor;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating doctor", e);
+            throw new DoctorUpdateException("Error updating doctor", e);
         }
     }
 }

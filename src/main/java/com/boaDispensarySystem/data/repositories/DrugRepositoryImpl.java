@@ -1,71 +1,133 @@
 package com.boaDispensarySystem.data.repositories;
 
-
-
+import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Drug;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.Optional;
 
 public class DrugRepositoryImpl implements DrugRepository {
 
-    private static List<Drug> drugs = new ArrayList<>();
-
     public long count() {
-        return drugs.size();
+        String sql = "SELECT COUNT(*) AS total FROM drugs";
+        try (Connection conn = DbConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getLong("total");
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting drugs", e);
+        }
     }
 
     public Drug save(Drug drug) {
-        if(isNew(drug)) saveNew(drug);
-        else update(drug);
-        return drug;
-    }
 
-    private void update(Drug drug) {
-        deleteByID(drug.getId());
-        drugs.add(drug);
-    }
+        String sql = "INSERT INTO drugs (id, name, type, category, expiry_date, manufacture_date, date_added, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-    public Drug deleteByID(int id) {
-        for(int index = 0; index < drugs.size(); index++) {
-            if(drugs.get(index).getId() == id) drugs.remove(index);
+            ps.setString(1, String.valueOf(drug.getId()));
+            ps.setString(2, drug.getName());
+            ps.setString(3, drug.getType().name());
+            ps.setString(4, drug.getCategory().name());
+            ps.setDate(5, Date.valueOf(drug.getExpiryDate()));
+            ps.setDate(6,Date.valueOf(drug.getManufactureDate()));
+            ps.setDate(7, Date.valueOf(drug.getDateAdded().toLocalDate()));
+            ps.setInt(8, drug.getQuantity());
+
+            ps.executeUpdate();
+            return drug;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving drug", e);
         }
-        return null;
+
     }
 
-    private void saveNew(Drug drug) {
-        drug.setId(generateId());
-        drugs.add(drug);
-    }
+    @Override
+    public boolean deleteByID(int id) {
+        String sql = "DELETE FROM drugs WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-    private int generateId() {
-        return drugs.size() +1;
-    }
+            ps.setString(1, String.valueOf(id));
+            ps.executeUpdate();
 
-    private boolean isNew(Drug drug) {
-        return drug.getId() == 0;
-    }
-
-
-    public Drug findById(int id) {
-        for (Drug drug  :  drugs) {
-            if (drug.getId() == id) return drug;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting drug", e);
         }
-        return null;
+        return false;
     }
 
-    public Drug findByName(String name) {
-        for (Drug drug :  drugs) {
-            if (drug.getName().equals(name)) return drug;
+    @Override
+    public Optional<Drug> findById(int id) {
+        String sql = "SELECT * FROM drugs WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, String.valueOf(id));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return Optional.of(DrugMapper.mapResultSetToDrug(rs));
+            }
+            return Optional.empty();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding drug by ID", e);
         }
-        return null;
     }
 
-    public List<Drug> findAll() {
-        return drugs;
+    @Override
+    public Optional<Drug> findByName(String name) {
+
+        String sql = "SELECT * FROM drugs WHERE name = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return Optional.of(DrugMapper.mapResultSetToDrug(rs));
+            }
+            return Optional.empty();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding drug by name", e);
+        }
     }
 
+    private Drug update(Drug drug) {
+        String sql = "UPDATE drugs SET name = ?, type = ?, category = ?, expiry_date = ?, manufacture_date = ?, date_added = ?, quantity = ? WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, drug.getName());
+            ps.setString(2, drug.getType().name());
+            ps.setString(3, drug.getCategory().name());
+            ps.setDate(4, Date.valueOf(drug.getExpiryDate()));
+            ps.setDate(5, Date.valueOf(drug.getManufactureDate()));
+            ps.setDate(6, Date.valueOf(drug.getDateAdded().toLocalDate()));
+            ps.setInt(7, drug.getQuantity());
+
+            int updatedRows = ps.executeUpdate();
+            if (updatedRows == 0) {
+                throw new RuntimeException("No doctor found with id: " + drug.getId());
+            }
+            return drug;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating drug", e);
+        }
+    }
 
 
 }
+
+
+
+
 
