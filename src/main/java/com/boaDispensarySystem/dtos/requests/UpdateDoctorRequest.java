@@ -8,7 +8,7 @@ public class UpdateDoctorRequest {
     private String lastName;
     private String email;
     private String password;
-    private Specialization specialization;
+    private String specialization;
 
     public UpdateDoctorRequest() {}
 
@@ -45,11 +45,11 @@ public class UpdateDoctorRequest {
         this.password = password;
     }
 
-    public Specialization getSpecialization() {
+    public String getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(Specialization specialization) {
+    public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
 }

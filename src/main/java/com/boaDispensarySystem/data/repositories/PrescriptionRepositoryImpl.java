@@ -1,4 +1,4 @@
-package com.boaDispensarySystem.data.repositories;
+/* package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Prescription;
@@ -18,7 +18,7 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
                 INSERT INTO prescriptions ()
                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
                 ON DUPLICATE KEY UPDATE
-                    
+
                 """;
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -62,3 +62,5 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
         return false;
     }
 }
+
+ */

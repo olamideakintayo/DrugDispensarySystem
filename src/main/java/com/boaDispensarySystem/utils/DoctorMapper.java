@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class DoctorMapper {
 
-    // ResultSet -> Entity
+
     public static Doctor mapResultSetToDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setId(rs.getString("id"));
@@ -19,11 +19,11 @@ public class DoctorMapper {
         doctor.setLastName(rs.getString("last_name"));
         doctor.setEmail(rs.getString("email"));
         doctor.setPassword(rs.getString("password"));
-        doctor.setSpecialization(Specialization.valueOf(rs.getString("specialization")));
+        doctor.setSpecialization(rs.getString("specialization"));
         return doctor;
     }
 
-    //DTO -> Entity (Create)
+
     public static Doctor mapCreateDoctorRequestToDoctor(CreateDoctorRequest request, String id) {
         Doctor doctor = new Doctor();
         doctor.setId(id);
@@ -35,18 +35,17 @@ public class DoctorMapper {
         return doctor;
     }
 
-    // ------------------- Entity -> DTO (Response) -------------------
     public static CreateDoctorResponse mapDoctorToCreateDoctorResponse(Doctor doctor) {
         CreateDoctorResponse response = new CreateDoctorResponse();
         response.setId(doctor.getId());
         response.setFirstName(doctor.getFirstName());
         response.setLastName(doctor.getLastName());
         response.setEmail(doctor.getEmail());
-        response.setSpecialization(Specialization.valueOf(doctor.getSpecialization().name()));
+        response.setSpecialization(doctor.getSpecialization());
         return response;
     }
 
-    // ------------------- DTO -> Entity (Update) -------------------
+
     public static Doctor mapUpdateDoctorRequestToDoctor(Doctor existingDoctor, UpdateDoctorRequest request) {
         if (request.getFirstName() != null) existingDoctor.setFirstName(request.getFirstName());
         if (request.getLastName() != null) existingDoctor.setLastName(request.getLastName());

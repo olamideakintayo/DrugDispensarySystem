@@ -1,12 +1,22 @@
-package com.boaDispensarySystem.data.repositories;
+/* package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Patient;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.boaDispensarySystem.data.models.Specialization;
+import com.boaDispensarySystem.exceptions.PatientCreationException;
+import com.boaDispensarySystem.exceptions.PatientDeletionException;
+import com.boaDispensarySystem.exceptions.PatientNotFoundException;
+import com.boaDispensarySystem.exceptions.PatientsRetrievalException;
+import com.boaDispensarySystem.utils.DoctorMapper;
+
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +50,7 @@ public class PatientRepositoryImpl implements PatientRepository {
             return patient;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error saving patient", e);
+            throw new PatientCreationException("Error saving patient", e);
         }
     }
 
@@ -64,7 +74,7 @@ public class PatientRepositoryImpl implements PatientRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding patient by id", e);
+            throw new PatientNotFoundException("Error finding patient by id", e);
         }
         return Optional.empty();
     }
@@ -83,22 +93,44 @@ public class PatientRepositoryImpl implements PatientRepository {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding patient by email", e);
+            throw new PatientNotFoundException("Error finding patient by email", e);
         }
         return Optional.empty();
     }
 
-    private Patient mapRowToPatient(ResultSet rs) {
-        return null;
-    }
+
 
     @Override
     public List<Patient> findAll() {
-        return List.of();
+        String sql = "SELECT * FROM patients";
+        List<Patient>  patients = new ArrayList<>();
+        try (Connection conn = DbConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                patients.add(PatientMapper.mapResultSetToPatient(rs));
+            }
+            return patients;
+
+        } catch (SQLException e) {
+            throw new PatientsRetrievalException("Error retrieving all patients", e);
+        }
     }
 
     @Override
     public boolean deleteById(String id) {
+        String sql = "DELETE FROM patients WHERE id = ?";
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PatientDeletionException("Error deleting patient", e);
+        }
         return false;
     }
 }
+*/

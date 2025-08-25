@@ -16,6 +16,10 @@ public interface PharmacistRepository {
 
     List<Pharmacist> findAll();
 
+    Pharmacist update(Pharmacist pharmacist);
+
+    long count();
+
     boolean deleteById(String id);
 
 }
