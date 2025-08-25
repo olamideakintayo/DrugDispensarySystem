@@ -1,4 +1,4 @@
-package com.boaDispensarySystem.data.repositories;
+/* package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Doctor;
@@ -128,3 +128,4 @@ public class PatientRepositoryImpl implements PatientRepository {
         return false;
     }
 }
+*/

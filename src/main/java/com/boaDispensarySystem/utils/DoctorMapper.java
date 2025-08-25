@@ -19,7 +19,7 @@ public class DoctorMapper {
         doctor.setLastName(rs.getString("last_name"));
         doctor.setEmail(rs.getString("email"));
         doctor.setPassword(rs.getString("password"));
-        doctor.setSpecialization(Specialization.valueOf(rs.getString("specialization")));
+        doctor.setSpecialization(rs.getString("specialization"));
         return doctor;
     }
 
@@ -41,7 +41,7 @@ public class DoctorMapper {
         response.setFirstName(doctor.getFirstName());
         response.setLastName(doctor.getLastName());
         response.setEmail(doctor.getEmail());
-        response.setSpecialization(Specialization.valueOf(doctor.getSpecialization().name()));
+        response.setSpecialization(doctor.getSpecialization());
         return response;
     }
 

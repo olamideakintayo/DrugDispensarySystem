@@ -14,12 +14,6 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Override
     public Doctor save(Doctor doctor) {
-        String idPrefix = "DR";
-        String databaseSize = String.valueOf(count());
-        String id = idPrefix+ databaseSize;
-
-        doctor.setId(id);
-
         String sql = "INSERT INTO doctors (id, first_name, last_name, email, password, specialization) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -29,7 +23,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             ps.setString(3, doctor.getLastName());
             ps.setString(4, doctor.getEmail());
             ps.setString(5, doctor.getPassword());
-            ps.setString(6, doctor.getSpecialization().name());
+            ps.setString(6, doctor.getSpecialization());
 
             ps.executeUpdate();
             return doctor;
@@ -47,9 +41,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
-            }
+            if (rs.next()) return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             return Optional.empty();
 
         } catch (SQLException e) {
@@ -65,9 +57,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
-            }
+            if (rs.next()) return Optional.of(DoctorMapper.mapResultSetToDoctor(rs));
             return Optional.empty();
 
         } catch (SQLException e) {
@@ -83,9 +73,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()) {
-                doctors.add(DoctorMapper.mapResultSetToDoctor(rs));
-            }
+            while (rs.next()) doctors.add(DoctorMapper.mapResultSetToDoctor(rs));
             return doctors;
 
         } catch (SQLException e) {
@@ -100,12 +88,11 @@ public class DoctorRepositoryImpl implements DoctorRepository {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, id);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new DoctorDeletionException("Error deleting doctor", e);
         }
-        return false;
     }
 
     @Override
@@ -115,9 +102,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            if (rs.next()) {
-                return rs.getLong("total");
-            }
+            if (rs.next()) return rs.getLong("total");
             return 0;
 
         } catch (SQLException e) {
@@ -135,11 +120,10 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             ps.setString(2, doctor.getLastName());
             ps.setString(3, doctor.getEmail());
             ps.setString(4, doctor.getPassword());
-            ps.setString(5, doctor.getSpecialization().name());
+            ps.setString(5, doctor.getSpecialization());
             ps.setString(6, doctor.getId());
 
-            int updatedRows = ps.executeUpdate();
-            if (updatedRows == 0) {
+            if (ps.executeUpdate() == 0) {
                 throw new DoctorNotFoundException("No doctor found with id: " + doctor.getId());
             }
             return doctor;
@@ -149,6 +133,3 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         }
     }
 }
-
-
-

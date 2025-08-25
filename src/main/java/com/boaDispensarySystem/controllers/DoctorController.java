@@ -4,6 +4,7 @@ import com.boaDispensarySystem.dtos.requests.CreateDoctorRequest;
 import com.boaDispensarySystem.dtos.requests.UpdateDoctorRequest;
 import com.boaDispensarySystem.dtos.responses.CreateDoctorResponse;
 import com.boaDispensarySystem.services.DoctorService;
+import com.boaDispensarySystem.services.DoctorServiceImpl;
 
 import java.util.List;
 

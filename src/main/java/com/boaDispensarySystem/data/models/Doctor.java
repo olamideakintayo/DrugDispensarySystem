@@ -4,7 +4,7 @@ public class Doctor {
     private String id;
     private String firstName;
     private String lastName;
-    private Specialization  specialization;
+    private String  specialization;
 
     private String email;
     private String password;
@@ -38,11 +38,11 @@ public class Doctor {
     public void setLastName(String lastName){
         this.lastName = lastName;
     }
-    public Specialization getSpecialization() {
+    public String getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(Specialization specialization) {
+    public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
 
