@@ -1,9 +1,7 @@
 package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
-import com.boaDispensarySystem.data.models.Doctor;
 import com.boaDispensarySystem.data.models.Patient;
-import com.boaDispensarySystem.data.models.Specialization;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +30,7 @@ public class PatientRepositoryImpl implements PatientRepository {
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, patient.getId());
-            stmt.setString(2, patient.getFirstName());
+            stmt.setString(2, patient.getFirstName(rSet.getString("firstName")));
             stmt.setString(3, patient.getLastName());
             stmt.setString(4, patient.getAge());
             stmt.setString(5, patient.getGender());
