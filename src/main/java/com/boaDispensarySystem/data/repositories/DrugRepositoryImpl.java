@@ -1,4 +1,4 @@
-package com.boaDispensarySystem.data.repositories;
+/* package com.boaDispensarySystem.data.repositories;
 
 import com.boaDispensarySystem.data.DbConnection;
 import com.boaDispensarySystem.data.models.Drug;
@@ -127,7 +127,7 @@ public class DrugRepositoryImpl implements DrugRepository {
 
 
 }
-
+*/
 
 
 

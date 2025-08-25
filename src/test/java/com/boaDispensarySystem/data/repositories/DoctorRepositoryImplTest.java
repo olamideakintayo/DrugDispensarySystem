@@ -40,7 +40,7 @@ class DoctorRepositoryImplTest {
         doctor.setLastName("Doe");
         doctor.setEmail("john@example.com");
         doctor.setPassword("pass123");
-        doctor.setSpecialization(Specialization.CARDIOLOGY);
+        doctor.setSpecialization("Cardiology");
 
         try (MockedStatic<DbConnection> dbMock = mockStatic(DbConnection.class)) {
             dbMock.when(DbConnection::getConnection).thenReturn(mockConnection);
@@ -156,7 +156,7 @@ class DoctorRepositoryImplTest {
         doctor.setLastName("Doe");
         doctor.setEmail("john@example.com");
         doctor.setPassword("pass123");
-        doctor.setSpecialization(Specialization.CARDIOLOGY);
+        doctor.setSpecialization("Virology");
 
         try (MockedStatic<DbConnection> dbMock = mockStatic(DbConnection.class)) {
             dbMock.when(DbConnection::getConnection).thenReturn(mockConnection);
@@ -180,7 +180,7 @@ class DoctorRepositoryImplTest {
         doctor.setLastName("User");
         doctor.setEmail("test@example.com");
         doctor.setPassword("pass123");
-        doctor.setSpecialization(Specialization.CARDIOLOGY);
+        doctor.setSpecialization("Virology");
 
         try (MockedStatic<DbConnection> dbMock = mockStatic(DbConnection.class)) {
             dbMock.when(DbConnection::getConnection).thenReturn(mockConnection);

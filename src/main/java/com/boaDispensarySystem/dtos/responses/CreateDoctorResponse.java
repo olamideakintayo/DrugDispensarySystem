@@ -8,7 +8,9 @@ public class CreateDoctorResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private Specialization specialization;
+    private String specialization;
+
+    private String password;
 
     public CreateDoctorResponse() {}
 
@@ -45,11 +47,19 @@ public class CreateDoctorResponse {
         this.email = email;
     }
 
-    public Specialization getSpecialization() {
+    public String getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(Specialization specialization) {
+    public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = "********";
     }
 }

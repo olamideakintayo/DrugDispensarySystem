@@ -21,12 +21,12 @@ import static org.mockito.Mockito.*;
 class AdminServiceTest {
 
     private AdminRepositoryImpl adminRepository;
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     @BeforeEach
     void setUp() {
         adminRepository = mock(AdminRepositoryImpl.class);
-        adminService = new AdminService(adminRepository);
+        adminService = new AdminServiceImpl(adminRepository);
     }
 
     @Test

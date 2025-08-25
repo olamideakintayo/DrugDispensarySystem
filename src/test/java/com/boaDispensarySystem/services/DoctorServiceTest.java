@@ -22,12 +22,12 @@ import static org.mockito.Mockito.*;
 class DoctorServiceTest {
 
     private DoctorRepositoryImpl doctorRepository;
-    private DoctorService doctorService;
+    private DoctorServiceImpl doctorService;
 
     @BeforeEach
     void setUp() {
         doctorRepository = mock(DoctorRepositoryImpl.class);
-        doctorService = new DoctorService(doctorRepository);
+        doctorService = new DoctorServiceImpl(doctorRepository);
     }
 
     @Test
@@ -44,7 +44,7 @@ class DoctorServiceTest {
         fakeDoctor.setId("123");
         fakeDoctor.setFirstName("John");
         fakeDoctor.setLastName("Doe");
-        fakeDoctor.setSpecialization(Specialization.DERMATOLOGY);
+        fakeDoctor.setSpecialization("Dermatology");
         fakeDoctor.setPassword("hashed");
 
         try (MockedStatic<DoctorMapper> mapperMock = mockStatic(DoctorMapper.class);
@@ -91,7 +91,7 @@ class DoctorServiceTest {
         doctor.setId("1");
         doctor.setFirstName("Alice");
         doctor.setLastName("Smith");
-        doctor.setSpecialization(Specialization.DERMATOLOGIST);
+        doctor.setSpecialization("Dermatology");
 
         when(doctorRepository.findById("1")).thenReturn(Optional.of(doctor));
 
@@ -123,13 +123,13 @@ class DoctorServiceTest {
         d1.setId("1");
         d1.setFirstName("John");
         d1.setLastName("Doe");
-        d1.setSpecialization(Specialization.DERMATOLOGY);
+        d1.setSpecialization("Dermatology");
 
         Doctor d2 = new Doctor();
         d2.setId("2");
         d2.setFirstName("Jane");
         d2.setLastName("Smith");
-        d2.setSpecialization(Specialization.DERMATOLOGY);
+        d2.setSpecialization("Dermatology");
 
         when(doctorRepository.findAll()).thenReturn(Arrays.asList(d1, d2));
 
@@ -149,7 +149,7 @@ class DoctorServiceTest {
         Doctor existingDoctor = new Doctor();
         existingDoctor.setId("1");
         existingDoctor.setPassword("oldPass");
-        existingDoctor.setSpecialization(Specialization.DERMATOLOGY);
+        existingDoctor.setSpecialization("Dermatology");
 
         UpdateDoctorRequest request = new UpdateDoctorRequest();
         request.setPassword("newPass");
