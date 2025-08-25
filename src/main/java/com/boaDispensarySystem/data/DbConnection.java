@@ -18,10 +18,12 @@ public class DbConnection {
         String password = dotenv.get("DB_PASSWORD");
 
         // Debug print to confirm values are loaded
-        System.out.println("Loaded DB_URL = " + url);
-        System.out.println("Loaded DB_USER = " + user);
+        //
+        //
+        //System.out.println("Loaded DB_URL = " + url);
+        //System.out.println("Loaded DB_USER = " + user);
         // Don’t print password for security in real apps
-        System.out.println("Loaded DB_PASSWORD = " + (password != null ? "****" : "null"));
+        //System.out.println("Loaded DB_PASSWORD = " + (password != null ? "****" : "null"));
 
         if (url == null || user == null) {
             throw new SQLNullException("Database credentials not loaded from .env file");
